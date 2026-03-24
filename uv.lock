@@ -1260,6 +1260,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "jupyterlab" },
+    { name = "matplotlib" },
     { name = "pandas" },
     { name = "pyxlms" },
 ]
@@ -1267,6 +1268,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "jupyterlab", specifier = ">=4.5.6" },
+    { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "pandas", specifier = ">=3.0.1" },
     { name = "pyxlms", specifier = ">=1.7.5" },
 ]
