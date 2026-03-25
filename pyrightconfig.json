@@ -5,7 +5,8 @@
 
   "exclude": [
     "**/__pycache__",
-    "**/.venv"
+    "**/.venv",
+    "scripts"
   ],
 
   "pythonVersion": "3.7",
