@@ -1,0 +1,14 @@
+{
+  "include": [
+    "."
+  ],
+
+  "exclude": [
+    "**/__pycache__",
+    "**/.venv",
+    "scripts"
+  ],
+
+  "pythonVersion": "3.7",
+  "pythonPlatform": "Linux"
+}
