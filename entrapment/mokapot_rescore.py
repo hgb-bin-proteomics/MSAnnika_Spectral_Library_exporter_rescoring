@@ -97,7 +97,7 @@ POSSIBLE_RESCORING_FEATURES_BETA = [
     "PP.NormalizedCrosslinkFragmentsBeta",
 ]
 
-__version = "1.0.1"
+__version = "1.0.2"
 logger = logging.getLogger(__name__)
 
 
@@ -142,7 +142,12 @@ def __do_mokapot_columns(
         )
         df["MP.Peptide"] = df.apply(lambda row: row["PP.PeptideB"], axis=1)
         df["MP.Protein"] = df.apply(lambda row: row["PP.ProteinB"], axis=1)
-    df.dropna(axis=1, subset=POSSIBLE_RESCORING_FEATURES, inplace=True)
+    dropped_features = [c for c in POSSIBLE_RESCORING_FEATURES if df[c].isna().any()]  # pyright: ignore[reportGeneralTypeIssues]
+    if len(dropped_features) > 0:
+        df.drop(columns=dropped_features, inplace=True)
+    logger.info(
+        f"Removed the following features because of missing values: {', '.join(dropped_features)}"
+    )
     return df
 
 
