@@ -35,6 +35,34 @@ def read(
     ],
     **kwargs,
 ) -> Dict[str, Any]:
+    r"""Read an annotated Spectronaut result file.
+
+    Reads an annotated Spectronaut result file with grouped crosslink-spectrum-matches and returns a
+    pyXLMS ``parser_result``.
+
+    Parameters
+    ----------
+    data : str, or pandas.DataFrame
+        The name/path of the Spectronaut result file or a pandas DataFrame.
+    score : "EG.Cscore", "PP.CompositeRelativeMatchScore", "PP.CompositePartialCscore", "PP.UniScoreFull", or "Mokapot Score"
+        Which score should be used for the crosslink-spectrum-matches.
+
+    Returns
+    -------
+    dict
+        The ``parser_result`` object containing all parsed information.
+
+    Examples
+    --------
+    >>> from pyXLMS_adaptor import read
+    >>> pr = read(
+    ...     "data/THIDDIAXL003_DIAmethodEval_SN20c4_Report_FM_crosslinking_plusDecoy_req_DIA12_CV48.csv_annotated.csv_grouped_by_residue_pair.csv",
+    ...     score="EG.Cscore",
+    ... )
+    >>> csms = pr["crosslink-spectrum-matches"]
+    >>> len(csms)
+    14480
+    """
     if isinstance(data, str):
         df = pd.read_csv(data, low_memory=False, **kwargs)
     else:
