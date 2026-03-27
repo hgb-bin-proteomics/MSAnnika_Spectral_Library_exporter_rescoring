@@ -27,6 +27,7 @@ exclude = [
     "site-packages",
     "venv",
     "scripts",
+    "entrapment/post_process.py",
 ]
 
 # Same as Black.
