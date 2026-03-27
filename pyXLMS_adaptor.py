@@ -7,19 +7,21 @@
 from __future__ import annotations
 
 import pandas as pd
-from pandas.api.typing.aliases import CompressionOptions
 from tqdm import tqdm
 
 from pyXLMS.data import create_csm
 from pyXLMS.data import create_parser_result
 from pyXLMS.parser.util import format_sequence
 from pyXLMS.parser.util import get_bool_from_value
+from pyXLMS.parser.util import __serialize_pandas_series
 
-from typing import Optional
-from typing import List
 from typing import Dict
 from typing import Any
-from typing import Literal
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 
 def read(
@@ -31,15 +33,10 @@ def read(
         "PP.UniScoreFull",
         "Mokapot Score",
     ],
-    compression: Optional[CompressionOptions] = None,
-    sep: str = ",",
-    decimal: str = ".",
+    **kwargs,
 ) -> Dict[str, Any]:
     if isinstance(data, str):
-        if compression is not None:
-            df = pd.read_csv(data, compression=compression, sep=sep, decimal=decimal, low_memory=False)
-        else:
-            df = pd.read_csv(data, sep=sep, decimal=decimal, low_memory=False)
+        df = pd.read_csv(data, low_memory=False, **kwargs)
     else:
         df = data
     csms = list()
@@ -95,6 +92,7 @@ def read(
             charge=int(row["FG.Charge"]),
             rt=None,
             im_cv=None,
+            additional_information={"source": __serialize_pandas_series(row)},
         )
         csms.append(csm)
     if len(csms) == 0:
