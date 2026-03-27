@@ -4,21 +4,26 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
+from __future__ import annotations
+
 import pandas as pd
+from pandas.api.typing.aliases import CompressionOptions
 from tqdm import tqdm
 
 from pyXLMS.data import create_csm
+from pyXLMS.data import create_parser_result
 from pyXLMS.parser.util import format_sequence
 from pyXLMS.parser.util import get_bool_from_value
 
+from typing import Optional
 from typing import List
 from typing import Dict
 from typing import Any
 from typing import Literal
 
 
-def read_csms(
-    df: pd.DataFrame,
+def read(
+    data: str | pd.DataFrame,
     score: Literal[
         "EG.Cscore",
         "PP.CompositeRelativeMatchScore",
@@ -26,7 +31,17 @@ def read_csms(
         "PP.UniScoreFull",
         "Mokapot Score",
     ],
-) -> List[Dict[str, Any]]:
+    compression: Optional[CompressionOptions] = None,
+    sep: str = ",",
+    decimal: str = ".",
+) -> Dict[str, Any]:
+    if isinstance(data, str):
+        if compression is not None:
+            df = pd.read_csv(data, compression=compression, sep=sep, decimal=decimal, low_memory=False)
+        else:
+            df = pd.read_csv(data, sep=sep, decimal=decimal, low_memory=False)
+    else:
+        df = data
     csms = list()
     for i, row in tqdm(df.iterrows(), total=df.shape[0], desc="Reading CSMs..."):
         if score == "PP.CompositeRelativeMatchScore":
@@ -82,4 +97,12 @@ def read_csms(
             im_cv=None,
         )
         csms.append(csm)
-    return csms
+    if len(csms) == 0:
+        raise RuntimeError(
+            "No crosslink-spectrum-matches were parsed! If this is unexpected, please file a bug report!"
+        )
+    return create_parser_result(
+        search_engine="Spectronaut",
+        csms=csms,
+        crosslinks=None,
+    )
