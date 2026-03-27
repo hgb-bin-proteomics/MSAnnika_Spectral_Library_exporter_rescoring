@@ -23,6 +23,8 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
+__version = "1.0.0"
+
 
 def read(
     data: str | pd.DataFrame,
