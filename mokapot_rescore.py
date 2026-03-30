@@ -99,12 +99,12 @@ POSSIBLE_RESCORING_FEATURES_BETA = [
     "PP.NormalizedCrosslinkFragmentsBeta",
 ]
 
-__version = "1.1.1"
+__version = "1.1.2"
 logger = logging.getLogger(__name__)
 
 
 def __do_mokapot_columns(
-    orig_df: pd.DataFrame, alpha: Optional[bool] = None
+    orig_df: pd.DataFrame, use_p_and_q_values: bool, alpha: Optional[bool]
 ) -> pd.DataFrame:
     df = orig_df.copy()
     df["MP.Spectrum"] = df.apply(
@@ -144,7 +144,10 @@ def __do_mokapot_columns(
         )
         df["MP.Peptide"] = df.apply(lambda row: row["PP.PeptideB"], axis=1)
         df["MP.Protein"] = df.apply(lambda row: row["PP.ProteinB"], axis=1)
-    dropped_features = [c for c in POSSIBLE_RESCORING_FEATURES if df[c].isna().any()]  # pyright: ignore[reportGeneralTypeIssues]
+    possible_rescoring_features = POSSIBLE_RESCORING_FEATURES
+    if use_p_and_q_values:
+        possible_rescoring_features += PQVALUES
+    dropped_features = [c for c in possible_rescoring_features if df[c].isna().any()]  # pyright: ignore[reportGeneralTypeIssues]
     if len(dropped_features) > 0:
         df.drop(columns=dropped_features, inplace=True)
     logger.info(
@@ -156,7 +159,7 @@ def __do_mokapot_columns(
 def __rescore_csms(
     orig_df: pd.DataFrame, use_p_and_q_values: bool = False
 ) -> pd.DataFrame:
-    df = __do_mokapot_columns(orig_df)
+    df = __do_mokapot_columns(orig_df, use_p_and_q_values, None)
     possible_rescoring_features = POSSIBLE_RESCORING_FEATURES
     if use_p_and_q_values:
         possible_rescoring_features += PQVALUES
@@ -186,8 +189,8 @@ def __rescore_csms(
 
 def __rescore_psms_separately(orig_df: pd.DataFrame) -> pd.DataFrame:
     df = orig_df.copy()
-    df_alpha = __do_mokapot_columns(df, alpha=True)
-    df_beta = __do_mokapot_columns(df, alpha=False)
+    df_alpha = __do_mokapot_columns(df, use_p_and_q_values=False, alpha=True)
+    df_beta = __do_mokapot_columns(df, use_p_and_q_values=False, alpha=False)
     rescoring_features_alpha = [
         feature for feature in POSSIBLE_RESCORING_FEATURES_ALPHA if feature in df
     ]
@@ -228,8 +231,8 @@ def __rescore_psms_separately(orig_df: pd.DataFrame) -> pd.DataFrame:
 
 def __rescore_psms_merged(orig_df: pd.DataFrame) -> pd.DataFrame:
     df = orig_df.copy()
-    df_alpha = __do_mokapot_columns(df, alpha=True)
-    df_beta = __do_mokapot_columns(df, alpha=False)
+    df_alpha = __do_mokapot_columns(df, use_p_and_q_values=False, alpha=True)
+    df_beta = __do_mokapot_columns(df, use_p_and_q_values=False, alpha=False)
     df_alpha["MERGE.CSMID"] = range(df_alpha.shape[0])
     df_beta["MERGE.CSMID"] = range(df_beta.shape[0])
     df_alpha.rename(
