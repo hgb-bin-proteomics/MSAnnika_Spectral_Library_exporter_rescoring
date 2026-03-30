@@ -19,6 +19,7 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
+DEBUG = False
 PQVALUES = [
     "PG.Cscore",
     "PG.Pvalue",
@@ -99,7 +100,7 @@ POSSIBLE_RESCORING_FEATURES_BETA = [
     "PP.NormalizedCrosslinkFragmentsBeta",
 ]
 
-__version = "1.1.3"
+__version = "1.1.4"
 logger = logging.getLogger(__name__)
 
 
@@ -166,6 +167,8 @@ def __rescore_csms(
     rescoring_features = [
         feature for feature in possible_rescoring_features if feature in df
     ]
+    if DEBUG:
+        df.to_csv("pre.csv", index=False)
     psms = mokapot.dataset.LinearPsmDataset(
         psms=df,
         target_column="MP.Target",
@@ -179,6 +182,8 @@ def __rescore_csms(
     logger.info(psms)
     models, scores = mokapot.brew([psms], rng=1337)
     df["Mokapot Score"] = scores[0]
+    if DEBUG:
+        df.to_csv("post.csv", index=False)
     conf = mokapot.confidence.assign_confidence([psms], scores)
     psms_conf: pd.DataFrame = conf[0].psms
     logger.info(
@@ -197,6 +202,10 @@ def __rescore_psms_separately(orig_df: pd.DataFrame) -> pd.DataFrame:
     rescoring_features_beta = [
         feature for feature in POSSIBLE_RESCORING_FEATURES_BETA if feature in df
     ]
+    if DEBUG:
+        df.to_csv("pre.csv", index=False)
+        df_alpha.to_csv("pre_alpha.csv", index=False)
+        df_beta.to_csv("pre_beta.csv", index=False)
     psms_alpha = mokapot.dataset.LinearPsmDataset(
         psms=df_alpha,
         target_column="MP.Target",
@@ -226,6 +235,8 @@ def __rescore_psms_separately(orig_df: pd.DataFrame) -> pd.DataFrame:
     df["Mokapot Score"] = df.apply(
         lambda row: min(row["Mokapot Score Alpha"], row["Mokapot Score Beta"]), axis=1
     )
+    if DEBUG:
+        df.to_csv("post.csv", index=False)
     return df
 
 
@@ -363,6 +374,8 @@ def __rescore_psms_merged(orig_df: pd.DataFrame) -> pd.DataFrame:
         ]
         if feature in psms_df
     ]
+    if DEBUG:
+        psms_df.to_csv("pre.csv", index=False)
     psms = mokapot.dataset.LinearPsmDataset(
         psms=psms_df,
         target_column="MP.Target",
@@ -379,6 +392,8 @@ def __rescore_psms_merged(orig_df: pd.DataFrame) -> pd.DataFrame:
     scores_b = list()
     scores_csm = list()
     psms_df["Mokapot Score"] = scores[0]
+    if DEBUG:
+        psms_df.to_csv("post.csv", index=False)
     for i in range(df.shape[0]):
         alpha: pd.Series = psms_df.iloc[i]
         beta: pd.Series = psms_df.iloc[df.shape[0] + i]
