@@ -177,7 +177,7 @@ def __rescore_csms(
         rng=1337,
     )
     logger.info(psms)
-    models, scores = mokapot.brew([psms])
+    models, scores = mokapot.brew([psms], rng=1337)
     df["Mokapot Score"] = scores[0]
     conf = mokapot.confidence.assign_confidence([psms], scores)
     psms_conf: pd.DataFrame = conf[0].psms
@@ -219,8 +219,8 @@ def __rescore_psms_separately(orig_df: pd.DataFrame) -> pd.DataFrame:
         rng=1337,
     )
     logger.info(psms_beta)
-    models_alpha, scores_alpha = mokapot.brew([psms_alpha])
-    models_beta, scores_beta = mokapot.brew([psms_beta])
+    models_alpha, scores_alpha = mokapot.brew([psms_alpha], rng=1337)
+    models_beta, scores_beta = mokapot.brew([psms_beta], rng=1337)
     df["Mokapot Score Alpha"] = scores_alpha[0]
     df["Mokapot Score Beta"] = scores_beta[0]
     df["Mokapot Score"] = df.apply(
@@ -374,7 +374,7 @@ def __rescore_psms_merged(orig_df: pd.DataFrame) -> pd.DataFrame:
         rng=1337,
     )
     logger.info(psms)
-    models, scores = mokapot.brew([psms])
+    models, scores = mokapot.brew([psms], rng=1337)
     scores_a = list()
     scores_b = list()
     scores_csm = list()
