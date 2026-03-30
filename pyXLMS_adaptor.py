@@ -23,6 +23,8 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
+__version = "1.0.1"
+
 
 def read(
     data: str | pd.DataFrame,
@@ -82,8 +84,16 @@ def read(
             score_b = float(row["PP.UniScoreBeta"])
             score_csm = float(row["PP.UniScoreFull"])
         elif score == "Mokapot Score":
-            score_a = float(row["Mokapot Score Alpha"])
-            score_b = float(row["Mokapot Score Beta"])
+            score_a = (
+                float(row["Mokapot Score Alpha"])
+                if "Mokapot Score Alpha" in row
+                else None
+            )
+            score_b = (
+                float(row["Mokapot Score Beta"])
+                if "Mokapot Score Beta" in row
+                else None
+            )
             score_csm = float(row["Mokapot Score"])
         else:
             score_a = float(row["EG.Cscore"])
