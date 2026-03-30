@@ -99,7 +99,7 @@ POSSIBLE_RESCORING_FEATURES_BETA = [
     "PP.NormalizedCrosslinkFragmentsBeta",
 ]
 
-__version = "1.1.0"
+__version = "1.1.1"
 logger = logging.getLogger(__name__)
 
 
@@ -442,5 +442,5 @@ def rescore(
     else:
         df = data
     if level == "CSM":
-        return __rescore_csms(df)
+        return __rescore_csms(df, use_p_and_q_values)
     return __rescore_psms_merged(df)
