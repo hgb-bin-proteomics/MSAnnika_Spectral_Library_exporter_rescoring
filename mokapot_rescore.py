@@ -99,7 +99,7 @@ POSSIBLE_RESCORING_FEATURES_BETA = [
     "PP.NormalizedCrosslinkFragmentsBeta",
 ]
 
-__version = "1.1.2"
+__version = "1.1.3"
 logger = logging.getLogger(__name__)
 
 
@@ -144,7 +144,7 @@ def __do_mokapot_columns(
         )
         df["MP.Peptide"] = df.apply(lambda row: row["PP.PeptideB"], axis=1)
         df["MP.Protein"] = df.apply(lambda row: row["PP.ProteinB"], axis=1)
-    possible_rescoring_features = POSSIBLE_RESCORING_FEATURES
+    possible_rescoring_features = POSSIBLE_RESCORING_FEATURES.copy()
     if use_p_and_q_values:
         possible_rescoring_features += PQVALUES
     dropped_features = [c for c in possible_rescoring_features if df[c].isna().any()]  # pyright: ignore[reportGeneralTypeIssues]
@@ -160,7 +160,7 @@ def __rescore_csms(
     orig_df: pd.DataFrame, use_p_and_q_values: bool = False
 ) -> pd.DataFrame:
     df = __do_mokapot_columns(orig_df, use_p_and_q_values, None)
-    possible_rescoring_features = POSSIBLE_RESCORING_FEATURES
+    possible_rescoring_features = POSSIBLE_RESCORING_FEATURES.copy()
     if use_p_and_q_values:
         possible_rescoring_features += PQVALUES
     rescoring_features = [
