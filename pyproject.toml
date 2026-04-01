@@ -10,6 +10,7 @@ dependencies = [
     "mokapot",
     "pandas<3",
     "pyxlms>=1.7.5",
+    "seaborn>=0.13.2",
     "tqdm>=4.67.3",
 ]
 
