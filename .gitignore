@@ -209,3 +209,5 @@ __marimo__/
 # Mokapot Output
 entrapment/targets.mp.peptides.csv
 entrapment/targets.psms.csv
+entrapment/post.csv
+entrapment/pre.csv
