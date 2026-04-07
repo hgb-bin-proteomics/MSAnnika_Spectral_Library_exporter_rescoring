@@ -19,7 +19,7 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
-DEBUG = False
+DEBUG = True
 PQVALUES = [
     "PG.Cscore",
     "PG.Pvalue",
