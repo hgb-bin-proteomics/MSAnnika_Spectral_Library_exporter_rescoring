@@ -6,7 +6,7 @@
   "exclude": [
     "**/__pycache__",
     "**/.venv",
-    "scripts",
+    "archive/scripts",
     "entrapment/post_process.py"
   ],
 
