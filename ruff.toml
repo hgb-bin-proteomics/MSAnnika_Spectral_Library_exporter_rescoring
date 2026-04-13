@@ -28,6 +28,7 @@ exclude = [
     "venv",
     "scripts",
     "entrapment/post_process.py",
+    "archive/.old",
 ]
 
 # Same as Black.
