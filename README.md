@@ -39,4 +39,24 @@ You can rescore your results with the following code:
 - In this case you get a new result file named `rescored.csv` with an extra column called `Mokapot Score` containing the new scores!
 - For more information regarding the `rescore()` function please refer to the [documentation](https://github.com/hgb-bin-proteomics/MSAnnika_Spectral_Library_exporter_rescoring/blob/master/mokapot_rescore.py#L410)!
 
-## Reading Result with pyXLMS
+## Reading Results with pyXLMS
+
+For FDR estimation and down-stream analysis we also provide a parser for [pyXLMS](https://github.com/hgb-bin-proteomics/pyXLMS).
+You can read both non-rescored and rescored results with it:
+- Launch a python shell with uv:
+  ```bash
+  uv run python
+  ```
+- Import the necessary python function:
+  ```python
+  from pyXLMS_adaptor import read
+  ```
+- Read the result file, in this case we use example data from the `/data` directory:
+  ```python
+  pr = read(
+      "data/THIDDIAXL003_DIAmethodEval_SN20c4_Report_FM_crosslinking_plusDecoy_req_DIA12_CV48.csv_annotated.csv_grouped_by_residue_pair.csv",
+      score="EG.Cscore",
+  )
+  ```
+- You now have a [parser_result](https://github.com/hgb-bin-proteomics/pyXLMS/blob/master/docs/data_types.md#parser-results) that you can use with pyXLMS!
+- For more information regarding the `read()` function please refer to the [documentation](https://github.com/hgb-bin-proteomics/MSAnnika_Spectral_Library_exporter_rescoring/blob/develop/pyXLMS_adaptor.py#L29)!
