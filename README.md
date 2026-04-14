@@ -60,3 +60,23 @@ You can read both non-rescored and rescored results with it:
   ```
 - You now have a [parser_result](https://github.com/hgb-bin-proteomics/pyXLMS/blob/master/docs/data_types.md#parser-results) that you can use with pyXLMS!
 - For more information regarding the `read()` function please refer to the [documentation](https://github.com/hgb-bin-proteomics/MSAnnika_Spectral_Library_exporter_rescoring/blob/develop/pyXLMS_adaptor.py#L29)!
+
+## Manuscript and Figure Code
+
+For the entrapment analysis and figure code we did for the manuscript, please check [this notebook](https://github.com/hgb-bin-proteomics/MSAnnika_Spectral_Library_exporter_rescoring/blob/master/entrapment/entrapment.ipynb).
+
+## Known Issues
+
+[List of known issues](https://github.com/hgb-bin-proteomics/MSAnnika_Spectral_Library_exporter_rescoring/issues)
+
+## Citing
+
+If you are using code from this repository please cite as described [here](https://github.com/hgb-bin-proteomics/MSAnnika_Spectral_Library_exporter?tab=readme-ov-file#citing).
+
+## License
+
+- [MIT](https://github.com/hgb-bin-proteomics/MSAnnika_Spectral_Library_exporter_rescoring/blob/master/LICENSE)
+
+## Contact
+
+- [micha.birklbauer@fh-hagenberg.at](mailto:micha.birklbauer@fh-hagenberg.at)
