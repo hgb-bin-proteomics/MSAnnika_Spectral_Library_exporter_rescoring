@@ -5,6 +5,8 @@ crosslinking spectral library search results,
 generated as [proposed here](https://github.com/hgb-bin-proteomics/MSAnnika_Spectral_Library_exporter),
 with [Mokapot](https://github.com/wfondrie/mokapot).
 
+![rescoring workflow image](img/rescore_wf.png)
+
 ## Requirements
 
 - You need annotated and grouped results as returned by [post_process.py](https://github.com/hgb-bin-proteomics/MSAnnika_Spectral_Library_exporter/blob/master/post_process.py)
